@@ -1,145 +1,113 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "../header/OGLT.hpp"
 
-Camera *OpenGL::m_Camera = new Camera();
-Mouse  *OpenGL::m_Mouse  = new Mouse();
-float OpenGL::deltaTime = 0.0f;
+namespace oglt {
+  float OpenGL::m_DeltaTime = 0.0f;
+  float OpenGL::m_LastFrame = 0.0f;
 
-OpenGL::OpenGL() {
-  this->m_Window  = new OpenGLWindow();
-  this->m_Shader  = new Shader();
+  OpenGL::OpenGL() {
+    this->m_Window  = NULL;
+    this->m_Shader  = NULL;
+    this->m_Camera  = NULL;
+    this->m_Mouse   = NULL;
 
-  this->m_Texture = new Texture();
-  this->m_VAO     = NULL;
-  this->m_VBO     = NULL;
-  this->m_EBO     = NULL;
-}
-
-void OpenGL::SetCursorCallback() {
-  glfwSetCursorPosCallback(this->m_Window->GetOpenGLWindow(), this->CursorCallback);
-}
-
-void OpenGL::SetScrollCallback() {
-  glfwSetScrollCallback(this->m_Window->GetOpenGLWindow(), this->ScrollCallback);
-}
-
-void OpenGL::SetCamera(Camera *camera) {
-  OpenGL::m_Camera = camera;
-}
-
-void OpenGL::SetMouse(Mouse *mouse) {
-  OpenGL::m_Mouse = mouse;
-}
-
-void OpenGL::SetVAO(VAO *vao) {
-  this->m_VAO = vao;
-}
-
-void OpenGL::SetVBO(VBO *vbo) {
-  this->m_VBO = vbo;
-}
-
-void OpenGL::SetEBO(EBO *ebo) {
-  this->m_EBO = ebo;
-}
-
-void OpenGL::CleanUp() {
-  delete this->m_Texture;
-
-  delete this->m_Shader;
-  delete this->m_Window;
-
-  if (this->m_EBO != NULL) {
-    this->m_EBO->Delete();
-    delete this->m_EBO;
-  }
-  if (this->m_VAO != NULL) {
-    this->m_VAO->Delete();
-    delete this->m_VAO;
-  }
-  if (this->m_VBO != NULL) {
-    this->m_VBO->Delete();
-    delete this->m_VBO;
+    this->m_Texture = NULL;
+    this->m_VAO     = NULL;
+    this->m_VBO     = NULL;
+    this->m_EBO     = NULL;
   }
 
-  delete OpenGL::m_Camera;
-  delete OpenGL::m_Mouse;
-}
-
-OpenGL::~OpenGL() {
-  this->CleanUp();
-  glfwTerminate();
-}
-
-Shader *OpenGL::GetShader() {
-  return this->m_Shader;
-}
-
-Camera *OpenGL::GetCamera() {
-  return OpenGL::m_Camera;
-}
-
-Mouse *OpenGL::GetMouse() {
-  return OpenGL::m_Mouse;
-}
-
-OpenGLWindow *OpenGL::GetWindow() {
-  return this->m_Window;
-}
-
-Texture *OpenGL::GetTexture() {
-  return this->m_Texture;
-}
-
-VAO *OpenGL::GetVAO() {
-  return this->m_VAO;
-}
-
-VBO *OpenGL::GetVBO() {
-  return this->m_VBO;
-}
-
-EBO *OpenGL::GetEBO() {
-  return this->m_EBO;
-}
-
-void OpenGL::CursorCallback(GLFWwindow *window, double xPosIn, double yPosIn) {
-  (void) window;
-  float xpos = (float) xPosIn;
-  float ypos = (float) yPosIn;
-
-  if (OpenGL::m_Mouse->IsFirstMouse()) {
-    OpenGL::m_Mouse->SetLastXPos(xpos);
-    OpenGL::m_Mouse->SetLastYPos(ypos);
-    OpenGL::m_Mouse->SetFirstMouse(false);
+  void OpenGL::CreateWindow(const char *title, WindowType type, int width, int height) {
+    this->m_Window = new Window();
+    this->m_Window->CreateWindow(title, type, width, height);
   }
 
-  float xoffset = xpos - OpenGL::m_Mouse->GetLastXPos();
-  float yoffset = OpenGL::m_Mouse->GetLastYPos() - ypos;
+  void OpenGL::CreateShaders(const char *vertexPath, const char *fragmentPath) {
+    this->m_Shader = new Shader(vertexPath, fragmentPath);
+  }
 
-  OpenGL::m_Mouse->SetLastXPos(xpos);
-  OpenGL::m_Mouse->SetLastYPos(ypos);
+  void OpenGL::CreateCamera() {
+    this->m_Camera = new Camera();
+  }
 
-  xoffset *= OpenGL::m_Mouse->GetSensitivity();
-  yoffset *= OpenGL::m_Mouse->GetSensitivity();
+  void OpenGL::CreateMouse() {
+    this->m_Mouse = new Mouse();
+  }
 
-  OpenGL::m_Camera->a_Yaw   += xoffset;
-  OpenGL::m_Camera->a_Pitch += yoffset;
-  
-  if (OpenGL::m_Camera->a_Pitch > 89.0f) OpenGL::m_Camera->a_Pitch = 89.0f;
-  if (OpenGL::m_Camera->a_Pitch < -89.0f) OpenGL::m_Camera->a_Pitch = -89.0f;
+  void OpenGL::CreateTexture(TextureType type, GLint wrapping, GLint filter) {
+    if (type == TextureType::TextureType2D) this->m_Texture = new Texture2D();
+    if (type == TextureType::TextureType3D) this->m_Texture = new Texture3D();
 
-  glm::vec3 front;
-  front.x = cos(glm::radians(OpenGL::m_Camera->a_Yaw)) * cos(glm::radians(OpenGL::m_Camera->a_Pitch));
-  front.y = sin(glm::radians(OpenGL::m_Camera->a_Pitch));
-  front.z = sin(glm::radians(OpenGL::m_Camera->a_Yaw)) * cos(glm::radians(OpenGL::m_Camera->a_Pitch));
-  OpenGL::m_Camera->SetFrontVector(glm::normalize(front));
-}
+    this->m_Texture->CreateTexture(wrapping, filter);
+  }
 
-void OpenGL::ScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-(void) window;
-  (void) xoffset;
+  void OpenGL::CreateVAO() {
+    this->m_VAO = new VAO();
+  }
 
-  OpenGL::m_Camera->a_FOV -= (float) yoffset;
-  if (OpenGL::m_Camera->a_FOV < 1.0F) OpenGL::m_Camera->a_FOV = 1.0f;
-  if (OpenGL::m_Camera->a_FOV > 45.0F) OpenGL::m_Camera->a_FOV = 45.0f;
+  void OpenGL::CreateVBO() {
+    this->m_VBO = new VBO();
+  }
+
+  void OpenGL::CreateEBO() {
+    this->m_EBO = new EBO();
+  }
+
+  void OpenGL::CleanUp() {
+    DELETE_IF_NOT_NULL(this->m_Texture);
+    DELETE_IF_NOT_NULL(this->m_Shader);
+    DELETE_IF_NOT_NULL(this->m_Window);
+    DELETE_IF_NOT_NULL(this->m_EBO);
+    DELETE_IF_NOT_NULL(this->m_VAO);
+    DELETE_IF_NOT_NULL(this->m_VBO);
+    DELETE_IF_NOT_NULL(this->m_Camera);
+    DELETE_IF_NOT_NULL(this->m_Mouse);
+  }
+
+  OpenGL::~OpenGL() {
+    this->CleanUp();
+    glfwTerminate();
+  }
+
+  float OpenGL::GetDeltaTime() {
+    return this->m_DeltaTime;
+  }
+
+  void OpenGL::CalculateDeltaTime() {
+    float currentFrame = glfwGetTime();
+    this->m_DeltaTime = currentFrame - this->m_LastFrame;
+    this->m_LastFrame = currentFrame;
+  }
+
+  Shader *OpenGL::GetShader() {
+    return this->m_Shader;
+  }
+
+  Camera *OpenGL::GetCamera() {
+    return OpenGL::m_Camera;
+  }
+
+  Mouse *OpenGL::GetMouse() {
+    return OpenGL::m_Mouse;
+  }
+
+  Window *OpenGL::GetWindow() {
+    return this->m_Window;
+  }
+
+  Texture *OpenGL::GetTexture() {
+    return this->m_Texture;
+  }
+
+  VAO *OpenGL::GetVAO() {
+    return this->m_VAO;
+  }
+
+  VBO *OpenGL::GetVBO() {
+    return this->m_VBO;
+  }
+
+  EBO *OpenGL::GetEBO() {
+    return this->m_EBO;
+  }
 }

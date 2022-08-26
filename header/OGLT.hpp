@@ -1,67 +1,76 @@
 #ifndef __OPENGL_TEMPLATE_HPP__
 #define __OPENGL_TEMPLATE_HPP__
 
-#include "./shader.hpp"
-#include "./window.hpp"
-#include "./texture.hpp"
-#include "./camera.hpp"
-#include "./mouse.hpp"
-#include "./VBO.hpp"
-#include "./EBO.hpp"
-#include "./VAO.hpp"
+#include "./Shader.hpp"
+#include "./Window.hpp"
+#include "./Camera.hpp"
+#include "./Mouse.hpp"
+#include "./Texture/Texture.hpp"
+#include "./Texture/Texture2D.hpp"
+#include "./Texture/Texture3D.hpp"
+#include "./BufferObject/VBO.hpp"
+#include "./BufferObject/EBO.hpp"
+#include "./BufferObject/VAO.hpp"
 
-class OpenGL {
-public:
-  static OpenGL &CreateInstance() {
-    static OpenGL opengl;
-    return opengl;
-  }
-  ~OpenGL();
+#define DELETE_IF_NOT_NULL(x) if ((x) != NULL) delete (x);
+
+namespace oglt {
+  class OpenGL {
+  public:
+    static OpenGL &CreateInstance() {
+      static OpenGL opengl;
+      return opengl;
+    }
+    virtual ~OpenGL();
   
-  OpenGLWindow   *GetWindow();
-  Shader         *GetShader();
-  Texture        *GetTexture();
+    Window   *GetWindow();
+    Shader   *GetShader();
+    Texture  *GetTexture();
 
-  VAO      *GetVAO();
-  VBO      *GetVBO();
-  EBO      *GetEBO();
+    VAO      *GetVAO();
+    VBO      *GetVBO();
+    EBO      *GetEBO();
 
-  static Camera *GetCamera();
-  static Mouse  *GetMouse();
+    Camera *GetCamera();
+    Mouse  *GetMouse();
 
-  static void SetCamera(Camera *camera);
-  static void SetMouse(Mouse *mouse);
+    float GetDeltaTime();
 
-  void SetVAO(VAO *vao);
-  void SetVBO(VBO *vbo);
-  void SetEBO(EBO *ebo);
+    void CalculateDeltaTime();
 
-  void SetCursorCallback();
-  void SetScrollCallback();
+    void CreateWindow(const char *title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
+    void CreateShaders(const char *vertexPath, const char *fragmentPath);
+    void CreateCamera();
+    void CreateMouse();
+    void CreateTexture(TextureType type, GLint wrapping = GL_REPEAT, GLint filter = GL_LINEAR);
 
-public:
-  static Camera *m_Camera;
-  static Mouse  *m_Mouse;
-  static float deltaTime;
+    void CreateVAO();
+    void CreateVBO();
+    void CreateEBO();
+
+  public:
+    Camera *m_Camera;
+    Mouse  *m_Mouse;
   
-protected:
-  OpenGL();
-  OpenGL(const OpenGL&) = delete;
+  protected:
+    OpenGL();
+    OpenGL(const OpenGL&) = delete;
 
-private:
-  static void CursorCallback(GLFWwindow *window, double xPosIn, double yPosIn);
-  static void ScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
+  private:
+    void CleanUp();
 
-  void CleanUp();
+  private:
+    static float m_DeltaTime;
+    static float m_LastFrame;
 
-private:
-  OpenGLWindow   *m_Window;
-  Shader         *m_Shader;
-  Texture        *m_Texture;
+    Window   *m_Window;
+    Shader   *m_Shader;
+    Texture  *m_Texture;
 
-  VAO      *m_VAO;
-  VBO      *m_VBO;
-  EBO      *m_EBO;
-};
+    VAO      *m_VAO;
+    VBO      *m_VBO;
+    EBO      *m_EBO;
+  };
+}
 
 #endif // __OPENGL_TEMPLATE_HPP__

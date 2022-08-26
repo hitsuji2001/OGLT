@@ -6,9 +6,9 @@
 #include "../OGLT/header/OGLT.hpp"
 
 int main() {
-  OpenGL &opengl = OpenGL::CreateInstance();
-  opengl.GetWindow()->CreateWindow("Demo");
-  opengl.GetShader()->LoadShaders("./shader/vertex.glsl", "./shader/fragment.glsl");
+  oglt::OpenGL &opengl = oglt::OpenGL::CreateInstance();
+  opengl.CreateWindow("Demo", oglt::WindowType::WindowedCentered);
+  opengl.CreateShaders("./shader/vertex.glsl", "./shader/fragment.glsl");
 
   float vertices[] = {
      // Coords,         // Color
@@ -23,11 +23,13 @@ int main() {
     1, 2, 3    // second triangle
   };
 
-  opengl.SetVAO(new VAO());
+  opengl.CreateVAO();
   opengl.GetVAO()->Bind();
 
-  opengl.SetEBO(new EBO(indices, sizeof(indices)));
-  opengl.SetVBO(new VBO(vertices, sizeof(vertices)));
+  opengl.CreateEBO();
+  opengl.GetEBO()->FlushData(indices, sizeof(indices));
+  opengl.CreateVBO();
+  opengl.GetVBO()->FlushData(vertices, sizeof(vertices));
   
   opengl.GetVAO()->LinkVBO(opengl.GetVBO(), 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
   opengl.GetVAO()->LinkVBO(opengl.GetVBO(), 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
