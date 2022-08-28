@@ -47,11 +47,15 @@ namespace oglt {
     glfwSetInputMode(window->GetOpenGLWindow(), mode, value);
   }
 
-  void Mouse::SetCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), GLFWwindow *window, double xPosIn, double yPosIn) {
-    callback(window, xPosIn, yPosIn);
+  void Mouse::DisableCursor(Window *window) {
+    glfwSetInputMode(window->GetOpenGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  }    
+
+  void Mouse::SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), Window *window) {
+    glfwSetCursorPosCallback(window->GetOpenGLWindow(), callback);
   }
 
-  void Mouse::SetScrollCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), GLFWwindow *window, double xPosIn, double yPosIn) {
-    callback(window, xPosIn, yPosIn);
+  void Mouse::SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffet), Window *window) {
+    glfwSetScrollCallback(window->GetOpenGLWindow(), callback);
   }
 }

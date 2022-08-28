@@ -12,19 +12,11 @@ namespace oglt {
   class Mouse {
   public:
     void SetMouseInputMode(Window *window, int mode, int value);
+    void DisableCursor(Window *window);
 
-    void SetCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn),
-			   GLFWwindow *window, double xPosIn, double yPosIn);
-    void SetScrollCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn),
-			   GLFWwindow *window, double xPosIn, double yPosIn);
+    void SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), Window *window);
+    void SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffset), Window *window);
 
-    Mouse();
-    virtual ~Mouse();
-
-  public:
-    float a_Sensitivty;
-
-  private:
     float GetLastXPos();
     float GetLastYPos();
     float GetSensitivity();
@@ -33,6 +25,12 @@ namespace oglt {
     void SetFirstMouse(bool value);
     void SetLastXPos(float value);
     void SetLastYPos(float value);
+
+    Mouse();
+    virtual ~Mouse();
+
+  public:
+    float a_Sensitivty;
 
   private:
     bool a_FirstMouse;

@@ -14,6 +14,7 @@ namespace oglt {
     vbo->Unbind();
   }
 
+
   void VAO::Bind() {
     glBindVertexArray(this->ID);
   }

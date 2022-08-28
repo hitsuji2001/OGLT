@@ -116,11 +116,11 @@ namespace oglt {
     if (!success) {
       GLchar logMessage[1024];
       glGetShaderInfoLog(*shader, sizeof(logMessage), NULL, logMessage);
-      std::cerr << "[ERROR]: " << type << " Shader compile failed: " << logMessage << std::endl;
+      std::cerr << "[OpenGL][Error]: " << type << " Shader compile failed: " << logMessage << std::endl;
       return false;
     }
 
-    std::cout << "[INFO]: Successfully compile `" << type << " Shader`" << std::endl;
+    std::cout << "[OpenGL][Info]: Successfully compile `" << type << " Shader`" << std::endl;
     return true;
   }
 
@@ -129,12 +129,12 @@ namespace oglt {
     const char *source = fileContent.c_str();
   
     if (source == NULL) {
-      std::cerr << "[ERROR]: Failed to read file `" << filePath << "`" << std::endl;
+      std::cerr << "[OpenGL][Error]: Failed to read file `" << filePath << "`" << std::endl;
       return false;
     }
     bool success = this->CompileShaderSource(source, shaderType, shader);
     if (!success) {
-      std::cerr << "[ERROR]: Failed to compile `" << filePath << "` (shader file)" << std::endl;
+      std::cerr << "[OpenGL][Error]: Failed to compile `" << filePath << "` (shader file)" << std::endl;
     }
 
     return success;
@@ -153,13 +153,13 @@ namespace oglt {
     if (!success) {
       GLchar logMessage[1024];
       glGetProgramInfoLog(this->m_ProgramID, sizeof(logMessage), NULL, logMessage);
-      std::cerr << "[ERROR]: Link `Shader Program` failed: " << logMessage << std::endl;
+      std::cerr << "[OpenGL][Error]: Link `Shader Program` failed: " << logMessage << std::endl;
       return false;
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    std::cout << "[INFO]: Successfully link `Shader Program`" << std::endl;
+    std::cout << "[OpenGL][Info]: Successfully link `Shader Program`" << std::endl;
     return success;
   }
 }

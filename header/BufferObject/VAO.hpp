@@ -12,6 +12,7 @@ namespace oglt {
     VAO();
 
     void LinkVBO(VBO *vbo, GLuint layout, GLint size = 3, GLenum type = GL_FLOAT, GLboolean normalized = GL_FALSE, GLsizei stride = 3 * sizeof(float), const GLvoid *pointer = (void*) 0);
+
     void Bind();
     void Unbind();
     void Delete();

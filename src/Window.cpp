@@ -12,16 +12,16 @@ namespace oglt {
 
   void Window::CreateWindow(const char *title, WindowType type, int width, int height) {
     switch (type) {
-    case BorderlessFullscreen:
+    case WindowType::BorderlessFullscreen:
       this->CreateBorderlessFullscreenWindow(title);
       break;
-    case Fullscreen:
+    case WindowType::Fullscreen:
       this->CreateFullScreenWindow(title);
       break;
-    case Normal:
+    case WindowType::Normal:
       this->CreateNormalWindow(title, width, height);
       break;
-    case WindowedCentered:
+    case WindowType::WindowedCentered:
       this->CreateCenteredWindow(title, width, height);
       break;
     default:
@@ -42,7 +42,7 @@ namespace oglt {
 
     this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, NULL, NULL);
     if (this->m_Window == NULL) {
-      std::cerr << "[Error]: Could not create Window\n";
+      std::cerr << "[OpenGL][Error]: Could not create Window\n";
       glfwTerminate();
       return false;
     }
@@ -60,7 +60,7 @@ namespace oglt {
 
     this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, glfwGetPrimaryMonitor(), NULL);
     if (this->m_Window == NULL) {
-      std::cerr << "[Error]: Could not create Window\n";
+      std::cerr << "[OpeGL - Error]: Could not create Window\n";
       glfwTerminate();
       return false;
     }
@@ -85,7 +85,7 @@ namespace oglt {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, NULL, NULL);
     if (this->m_Window == NULL) {
-      std::cerr << "[Error]: Could not create Window\n";
+      std::cerr << "[OpenGL][Error]: Could not create Window\n";
       glfwTerminate();
       return false;
     }
@@ -121,7 +121,7 @@ namespace oglt {
 
     this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, *this->m_Monitors, NULL);
     if (this->m_Window == NULL) {
-      std::cerr << "[Error]: Could not create Window\n";
+      std::cerr << "[OpenGL][Error]: Could not create Window\n";
       glfwTerminate();
       return false;
     }
@@ -171,6 +171,11 @@ namespace oglt {
       std::cerr << "Could not initialize GLAD\n";
       return false;
     }
+
+    int gl_ver_major = glfwGetWindowAttrib(this->m_Window, GLFW_CONTEXT_VERSION_MAJOR);
+    int gl_ver_minor = glfwGetWindowAttrib(this->m_Window, GLFW_CONTEXT_VERSION_MINOR);
+    fprintf(stdout, "[OpenGL][Info]: Loaded OpenGL version: %d.%d\n", gl_ver_major, gl_ver_minor);
+
     return true;
   }
 

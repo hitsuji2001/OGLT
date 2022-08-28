@@ -1,1 +1,6 @@
 opengl
+todo.org
+main.cpp
+*.png
+*.jpeg
+shader/*

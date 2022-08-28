@@ -9,7 +9,7 @@
 #include "../../stb/stb_image.h"
 
 namespace oglt {
-  enum TextureType {
+  enum class TextureType {
     TextureType2D,
     TextureType3D,
   };

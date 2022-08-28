@@ -10,7 +10,7 @@
 #define OPENGL_VERSION_MINOR 3
 
 namespace oglt {
-  enum WindowType {
+  enum class WindowType {
     BorderlessFullscreen,
     Fullscreen,
     Normal,
@@ -24,7 +24,7 @@ namespace oglt {
 
     // If both `width` and `height` is set to 0
     // This will create a window of the size
-    // width = (primary monior width) / 1.75f
+    // width  = (primary monior width) / 1.75f
     // height = width / 16 * 9
     void CreateWindow(const char *title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
 
