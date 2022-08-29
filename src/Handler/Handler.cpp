@@ -1,30 +1,34 @@
 #include "../../header/Handler/Handler.hpp"
 
 namespace oglt {
+  Camera *Handler::m_Camera = NULL;
+  Window *Handler::m_Window = NULL;
+  Mouse  *Handler::m_Mouse  = NULL;
+
   Handler::~Handler() {
   }
 
   Window *Handler::GetWindow() {
-    return this->m_Window;
+    return Handler::m_Window;
   }
 
   Camera *Handler::GetCamera() {
-    return this->m_Camera;
+    return Handler::m_Camera;
   }
 
   Mouse *Handler::GetMouse() {
-    return this->m_Mouse;
+    return Handler::m_Mouse;
   }
 
   void Handler::SetCamera(Camera *camera) {
-    this->m_Camera = camera;    
+    Handler::m_Camera = camera;    
   }
 
   void Handler::SetWindow(Window *window) {
-    this->m_Window = window;
+    Handler::m_Window = window;
   }
 
   void Handler::SetMouse(Mouse *mouse) {
-    this->m_Mouse = mouse;
+    Handler::m_Mouse = mouse;
   }
 }

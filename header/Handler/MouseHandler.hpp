@@ -12,13 +12,10 @@ namespace oglt {
     virtual ~MouseHandler();
 
     void Handle(float deltatime) override;
+
   private:
     static void MouseCursorCallback(GLFWwindow *window, double xPosIn, double yPosIn);
     static void MouseScrollCallback(GLFWwindow *window, double xoffset, double yoffset);
-
-  public:
-    static Mouse  *m_Mouse;
-    static Camera *m_Camera;
   };
 }
 

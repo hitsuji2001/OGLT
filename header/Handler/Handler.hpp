@@ -11,20 +11,21 @@
 namespace oglt {
   class Handler {
   public:
-    void SetCamera(Camera *camera);
-    void SetWindow(Window *window);
-    void SetMouse(Mouse *mouse);
-
-    Window *GetWindow();
-    Camera *GetCamera();
-    Mouse  *GetMouse();
-
-    virtual void Handle(float deltatime) = 0;
     virtual ~Handler() = 0;
+    virtual void Handle(float deltatime) = 0;
+
+    static Camera *GetCamera();
+    static Mouse  *GetMouse();
+    static Window *GetWindow();
+
+    static void SetCamera(Camera *camera);
+    static void SetWindow(Window *window);
+    static void SetMouse(Mouse *mouse);
+
   private:
-    Camera *m_Camera;
-    Mouse  *m_Mouse;
-    Window *m_Window;
+    static Camera *m_Camera;
+    static Mouse  *m_Mouse;
+    static Window *m_Window;
   };
 }
 

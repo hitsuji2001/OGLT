@@ -8,16 +8,16 @@ namespace oglt {
   }
 
   KeyHandler::KeyHandler(Window *window, Camera *camera) {
-    this->SetWindow(window);
-    this->SetCamera(camera);
+    KeyHandler::SetWindow(window);
+    KeyHandler::SetCamera(camera);
   }
 
   void KeyHandler::Handle(float deltaTime) {
-    GLFWwindow *window = this->GetWindow()->GetOpenGLWindow();
-    Camera *camera = this->GetCamera();
+    GLFWwindow *window = KeyHandler::GetWindow()->GetOpenGLWindow();
+    Camera *camera = KeyHandler::GetCamera();
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS or
 	glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-      glfwSetWindowShouldClose(this->GetWindow()->GetOpenGLWindow(), true);
+      glfwSetWindowShouldClose(KeyHandler::GetWindow()->GetOpenGLWindow(), true);
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) camera->MoveUp(deltaTime);

@@ -2,28 +2,30 @@
 #include "../header/OGLT.hpp"
 
 namespace oglt {
-  float OpenGL::m_DeltaTime = 0.0f;
-  float OpenGL::m_LastFrame = 0.0f;
+  float    OpenGL::m_DeltaTime		= 0.0f;
+  float    OpenGL::m_LastFrame		= 0.0f;
+  Camera  *OpenGL::m_ViewCamera		= NULL;
+  Window  *OpenGL::m_Window		= NULL;
+  Mouse   *OpenGL::m_Mouse		= NULL;
+  Handler *OpenGL::m_MouseHandler	= NULL;
+  Handler *OpenGL::m_KeyHandler		= NULL;
 
   OpenGL::OpenGL() {
-    this->m_Window  = NULL;
-    this->m_Shader  = NULL;
-    this->m_Camera  = NULL;
-    this->m_Mouse   = NULL;
-    this->m_Texture = NULL;
+    this->m_Shader		= NULL;
+    this->m_Texture		= NULL;
 
-    this->m_KeyHandler   = NULL;
-    this->m_MouseHandler = NULL;
+    this->m_KeyHandler		= NULL;
+    this->m_MouseHandler	= NULL;
 
-    this->m_VAO     = NULL;
-    this->m_VBO     = NULL;
-    this->m_EBO     = NULL;
+    this->m_VAO			= NULL;
+    this->m_VBO			= NULL;
+    this->m_EBO			= NULL;
   }
 
   void OpenGL::CreateWindow(const char *title, WindowType type, int width, int height) {
-    if (this->m_Window == NULL) {
-      this->m_Window = new Window();
-      this->m_Window->CreateWindow(title, type, width, height);
+    if (OpenGL::GetWindow() == NULL) {
+      OpenGL::m_Window = new Window();
+      OpenGL::GetWindow()->CreateWindow(title, type, width, height);
     } else {
       std::cerr << "[TODO]: Handle this case bro" << std::endl;
       exit(1);
@@ -43,11 +45,11 @@ namespace oglt {
 
   void OpenGL::CreateCamera() {
     // TODO: Can we have multiple camera?
-    if (this->m_Camera == NULL) this->m_Camera = new Camera();
+    if (OpenGL::m_ViewCamera == NULL) OpenGL::m_ViewCamera = new Camera();
   }
 
   void OpenGL::CreateMouse() {
-    if (this->m_Mouse == NULL) this->m_Mouse = new Mouse();
+    if (OpenGL::m_Mouse == NULL) OpenGL::m_Mouse = new Mouse();
   }
 
   void OpenGL::CreateTexture(TextureType type, GLint wrapping, GLint filter) {
@@ -66,14 +68,12 @@ namespace oglt {
   }
 
   void OpenGL::CreateKeyHandler() {
-    if (this->m_KeyHandler == NULL) this->m_KeyHandler = new KeyHandler(this->m_Window, this->m_Camera);
+    if (OpenGL::m_KeyHandler == NULL) OpenGL::m_KeyHandler = new KeyHandler(OpenGL::GetWindow(), OpenGL::m_ViewCamera);
   }
 
   void OpenGL::CreateMouseHandler() {
-    if (this->m_MouseHandler == NULL) {
-      this->m_MouseHandler = new MouseHandler(this->m_Window, this->m_Mouse, this->m_Camera);
-      this->m_MouseHandler->SetCamera(this->m_Camera);
-      this->m_MouseHandler->SetMouse(this->m_Mouse);
+    if (OpenGL::m_MouseHandler == NULL) {
+      OpenGL::m_MouseHandler = new MouseHandler(OpenGL::GetWindow(), OpenGL::m_Mouse, OpenGL::m_ViewCamera);
     }
   }
 
@@ -95,9 +95,6 @@ namespace oglt {
   void OpenGL::CleanUp() {
     DELETE_IF_NOT_NULL(this->m_Texture);
     DELETE_IF_NOT_NULL(this->m_Shader);
-    DELETE_IF_NOT_NULL(this->m_Window);
-    DELETE_IF_NOT_NULL(this->m_Camera);
-    DELETE_IF_NOT_NULL(this->m_Mouse);
 
     DELETE_IF_NOT_NULL(this->m_KeyHandler);
     DELETE_IF_NOT_NULL(this->m_MouseHandler);
@@ -105,6 +102,10 @@ namespace oglt {
     DELETE_IF_NOT_NULL(this->m_EBO);
     DELETE_IF_NOT_NULL(this->m_VAO);
     DELETE_IF_NOT_NULL(this->m_VBO);
+
+    DELETE_IF_NOT_NULL(OpenGL::m_Window);
+    DELETE_IF_NOT_NULL(OpenGL::m_ViewCamera);
+    DELETE_IF_NOT_NULL(OpenGL::m_Mouse);
   }
 
   OpenGL::~OpenGL() {
@@ -127,15 +128,15 @@ namespace oglt {
   }
 
   Camera *OpenGL::GetCamera() {
-    return this->m_Camera;
+    return OpenGL::m_ViewCamera;
   }
 
   Mouse *OpenGL::GetMouse() {
-    return this->m_Mouse;
+    return OpenGL::m_Mouse;
   }
 
   Window *OpenGL::GetWindow() {
-    return this->m_Window;
+    return OpenGL::m_Window;
   }
 
   Texture *OpenGL::GetTexture() {
@@ -143,11 +144,11 @@ namespace oglt {
   }
 
   Handler *OpenGL::GetKeyHandler() {
-    return this->m_KeyHandler;
+    return OpenGL::m_KeyHandler;
   }
 
   Handler *OpenGL::GetMouseHandler() {
-    return this->m_MouseHandler;
+    return OpenGL::m_MouseHandler;
   }
 
   VAO *OpenGL::GetVAO() {

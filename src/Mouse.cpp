@@ -2,7 +2,7 @@
 
 namespace oglt {
   Mouse::Mouse() {
-    this->a_Sensitivty = 0.0001f;
+    this->a_Sensitivty = 0.5f;
 
     this->a_XPos = 0.0f;
     this->a_YPos = 0.0f;
