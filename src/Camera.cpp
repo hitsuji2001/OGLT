@@ -3,18 +3,17 @@
 namespace oglt {
   Camera::Camera() {
     this->a_Position	= glm::vec3(0.0f, 0.0f, 2.4f);
-    this->a_Front		= glm::vec3(0.0f, 0.0f, -1.0f);
-    this->a_UpVector      = glm::vec3(0.0f, 1.0f, 0.0f);
+    this->a_Front	= glm::vec3(0.0f, 0.0f, -1.0f);
+    this->a_UpVector    = glm::vec3(0.0f, 1.0f, 0.0f);
 
-    this->a_Yaw           = -90.0f;
-    this->a_Pitch         = 0.0f;
-    this->a_FOV           = 45.0f;
+    this->a_Yaw         = -90.0f;
+    this->a_Pitch       = 0.0f;
+    this->a_FOV         = 45.0f;
 
-    this->a_Speed		= 10.0f;
+    this->a_Speed	= 10.0f;
   }
 
   Camera::~Camera() {
-
   }
 
   glm::vec3 Camera::GetPosition() {
@@ -33,6 +32,18 @@ namespace oglt {
     return this->a_Speed;
   }
 
+  float Camera::GetFOV() {
+    return this->a_FOV;
+  }
+
+  float Camera::GetYaw() {
+    return this->a_Yaw;
+  }
+
+  float Camera::GetPitch() {
+    return this->a_Pitch;
+  }
+
   void Camera::SetFrontVector(glm::vec3 value) {
     this->a_Front = value;
   }
@@ -47,6 +58,14 @@ namespace oglt {
 
   void Camera::SetFOV(float value) {
     this->a_FOV = value;
+  }
+
+  void Camera::SetYaw(float value) {
+    this->a_Yaw = value;
+  }
+
+  void Camera::SetPitch(float value) {
+    this->a_Pitch = value;
   }
 
   void Camera::MoveUp(float dt) {

@@ -2,8 +2,8 @@
 #include "../header/OGLT.hpp"
 
 namespace oglt {
-  float    OpenGL::m_DeltaTime		= 0.0f;
-  float    OpenGL::m_LastFrame		= 0.0f;
+  float    OpenGL::a_DeltaTime		= 0.0f;
+  float    OpenGL::a_LastFrame		= 0.0f;
   Camera  *OpenGL::m_ViewCamera		= NULL;
   Window  *OpenGL::m_Window		= NULL;
   Mouse   *OpenGL::m_Mouse		= NULL;
@@ -113,14 +113,18 @@ namespace oglt {
     glfwTerminate();
   }
 
+  void OpenGL::PollEvents() {
+    glfwPollEvents();
+  }
+
   float OpenGL::GetDeltaTime() {
-    return this->m_DeltaTime;
+    return OpenGL::a_DeltaTime;
   }
 
   void OpenGL::CalculateDeltaTime() {
     float currentFrame = glfwGetTime();
-    this->m_DeltaTime = currentFrame - this->m_LastFrame;
-    this->m_LastFrame = currentFrame;
+    OpenGL::a_DeltaTime = currentFrame - OpenGL::a_LastFrame;
+    OpenGL::a_LastFrame = currentFrame;
   }
 
   Shader *OpenGL::GetShader() {

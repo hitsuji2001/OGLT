@@ -29,7 +29,6 @@ namespace oglt {
     }
     virtual ~OpenGL();
 
-    float     GetDeltaTime();
     Shader   *GetShader();
     Texture  *GetTexture();
 
@@ -42,11 +41,13 @@ namespace oglt {
     static Mouse    *GetMouse();
     static Handler  *GetKeyHandler();
     static Handler  *GetMouseHandler();
+    static float     GetDeltaTime();
 
-    void CalculateDeltaTime();
     void CreateShaders(const char *vertexPath, const char *fragmentPath);
     void CreateTexture(TextureType type, GLint wrapping = GL_REPEAT, GLint filter = GL_LINEAR);
 
+    static void PollEvents();
+    static void CalculateDeltaTime();
     static void CreateWindow(const char *title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
     static void CreateCamera();
     static void CreateMouse();
@@ -67,8 +68,8 @@ namespace oglt {
     void CleanUp();
 
   private:
-    static float m_DeltaTime;
-    static float m_LastFrame;
+    static float a_DeltaTime;
+    static float a_LastFrame;
 
     static Camera  *m_ViewCamera;
     static Mouse   *m_Mouse;

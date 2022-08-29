@@ -23,43 +23,48 @@ namespace oglt {
   void MouseHandler::MouseCursorCallback(GLFWwindow *window, double xPosIn, double yPosIn) {
     (void) window;
 
+    Camera *camera = MouseHandler::GetCamera();
+    Mouse  *mouse  = MouseHandler::GetMouse();
+
     float xpos = (float) xPosIn;
     float ypos = (float) yPosIn;
 
-    if (MouseHandler::GetMouse()->IsFirstMouse()) {
-      MouseHandler::GetMouse()->SetLastXPos(xpos);
-      MouseHandler::GetMouse()->SetLastYPos(ypos);
-      MouseHandler::GetMouse()->SetFirstMouse(false);
+    if (mouse->IsFirstMouse()) {
+      mouse->SetLastXPos(xpos);
+      mouse->SetLastYPos(ypos);
+      mouse->SetFirstMouse(false);
     }
 
-    float xoffset = xpos - MouseHandler::GetMouse()->GetLastXPos();
-    float yoffset = MouseHandler::GetMouse()->GetLastYPos() - ypos;
+    float xoffset = xpos - mouse->GetLastXPos();
+    float yoffset = mouse->GetLastYPos() - ypos;
 
-    MouseHandler::GetMouse()->SetLastXPos(xpos);
-    MouseHandler::GetMouse()->SetLastYPos(ypos);
+    mouse->SetLastXPos(xpos);
+    mouse->SetLastYPos(ypos);
 
-    xoffset *= MouseHandler::GetMouse()->GetSensitivity();
-    yoffset *= MouseHandler::GetMouse()->GetSensitivity();
+    xoffset *= mouse->GetSensitivity();
+    yoffset *= mouse->GetSensitivity();
 
-    MouseHandler::GetCamera()->a_Yaw   += xoffset;
-    MouseHandler::GetCamera()->a_Pitch += yoffset;
+    camera->SetYaw(camera->GetYaw() + xoffset);
+    camera->SetPitch(camera->GetPitch() + yoffset);
   
-    if (MouseHandler::GetCamera()->a_Pitch > 89.0f) MouseHandler::GetCamera()->a_Pitch = 89.0f;
-    if (MouseHandler::GetCamera()->a_Pitch < -89.0f) MouseHandler::GetCamera()->a_Pitch = -89.0f;
+    if (camera->GetPitch() > 89.0f) camera->SetPitch(89.0f);
+    if (camera->GetPitch() < -89.0f) camera->SetPitch(-89.0f);
 
     glm::vec3 front;
-    front.x = cos(glm::radians(MouseHandler::GetCamera()->a_Yaw)) * cos(glm::radians(MouseHandler::GetCamera()->a_Pitch));
-    front.y = sin(glm::radians(MouseHandler::GetCamera()->a_Pitch));
-    front.z = sin(glm::radians(MouseHandler::GetCamera()->a_Yaw)) * cos(glm::radians(MouseHandler::GetCamera()->a_Pitch));
-    MouseHandler::GetCamera()->SetFrontVector(glm::normalize(front));
+    front.x = cos(glm::radians(camera->GetYaw())) * cos(glm::radians(camera->GetPitch()));
+    front.y = sin(glm::radians(camera->GetPitch()));
+    front.z = sin(glm::radians(camera->GetYaw())) * cos(glm::radians(camera->GetPitch()));
+    camera->SetFrontVector(glm::normalize(front));
   }
  
   void MouseHandler::MouseScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     (void) window;
     (void) xoffset;
 
-    MouseHandler::GetCamera()->a_FOV -= (float) yoffset;
-    if (MouseHandler::GetCamera()->a_FOV < 1.0F) MouseHandler::GetCamera()->a_FOV = 1.0f;
-    if (MouseHandler::GetCamera()->a_FOV > 45.0F) MouseHandler::GetCamera()->a_FOV = 45.0f;
+    Camera *camera = MouseHandler::GetCamera();
+
+    camera->SetFOV(camera->GetFOV() - yoffset);
+    if (camera->GetFOV() < 1.0f) camera->SetFOV(1.0f);
+    if (camera->GetFOV() > 45.0f) camera->SetFOV(45.0f);
   }
 }

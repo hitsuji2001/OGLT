@@ -27,10 +27,13 @@ namespace oglt {
     // width  = (primary monior width) / 1.75f
     // height = width / 16 * 9
     void CreateWindow(const char *title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
+    // hex_color will be in RGBA order
+    void ClearScreen(uint32_t hex_color, GLbitfield mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    void SwapBuffers();
+    bool IsOpen();
 
-  public:
-    uint32_t GetWidth();
-    uint32_t GetHeight();
+    uint32_t    GetWidth();
+    uint32_t    GetHeight();
     GLFWwindow *GetOpenGLWindow();
 
     void SetWidth(uint32_t value);
@@ -48,13 +51,13 @@ namespace oglt {
     static void FramebufferSizeCallback(GLFWwindow *window, int width, int height);
 
   private:
-    GLFWwindow *m_Window;
-    GLFWmonitor **m_Monitors;
-    const GLFWvidmode *m_VideoMode;
+    GLFWwindow         *m_Window;
+    GLFWmonitor       **m_Monitors;
+    const GLFWvidmode  *m_VideoMode;
 
-    int a_MonitorCount;
-    uint32_t a_Width;
-    uint32_t a_Height;
+    int         a_MonitorCount;
+    uint32_t    a_Width;
+    uint32_t    a_Height;
     const char *a_Title;
   };
 }

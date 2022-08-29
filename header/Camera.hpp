@@ -24,22 +24,27 @@ namespace oglt {
     glm::vec3 GetUpVector();
 
     float GetSpeed();
+    float GetFOV();
+    float GetYaw();
+    float GetPitch();
 
     void SetFrontVector(glm::vec3 value);
     void SetPosition(glm::vec3 value);
+
     void SetSpeed(float value);
     void SetFOV(float value);
-
-  public:
-    float a_Yaw;
-    float a_Pitch;
-    float a_FOV;
+    void SetYaw(float value);
+    void SetPitch(float value);
 
   private:
+    float     a_Yaw;
+    float     a_Pitch;
+    float     a_FOV;
+    float     a_Speed;
+
     glm::vec3 a_Position;
     glm::vec3 a_Front;
     glm::vec3 a_UpVector;
-    float a_Speed;
   };
 }
 

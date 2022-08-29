@@ -20,7 +20,7 @@ namespace oglt {
     float GetLastXPos();
     float GetLastYPos();
     float GetSensitivity();
-    bool IsFirstMouse();
+    bool  IsFirstMouse();
 
     void SetFirstMouse(bool value);
     void SetLastXPos(float value);
@@ -29,15 +29,11 @@ namespace oglt {
     Mouse();
     virtual ~Mouse();
 
-  public:
-    float a_Sensitivty;
-
   private:
-    bool a_FirstMouse;
-
+    float a_Sensitivty;
+    bool  a_FirstMouse;
     float a_XPos;
     float a_YPos;
-
     float a_LastXPos;
     float a_LastYPos;
   };

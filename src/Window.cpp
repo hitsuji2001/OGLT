@@ -29,6 +29,25 @@ namespace oglt {
     }
   }
 
+  bool Window::IsOpen() {
+    return glfwWindowShouldClose(this->m_Window);
+  }
+
+  void Window::ClearScreen(uint32_t hex_color, GLbitfield mask) {
+    float r, g, b, a;
+
+    r = (float)((hex_color >> (8 * 3)) & 0xFF) / (float)0xFF;
+    g = (float)((hex_color >> (8 * 2)) & 0xFF) / (float)0xFF;
+    b = (float)((hex_color >> (8 * 1)) & 0xFF) / (float)0xFF;
+    a = (float)((hex_color >> (8 * 0)) & 0xFF) / (float)0xFF;
+
+    glClearColor(r, g, b, a);
+    glClear(mask);
+  }
+
+  void Window::SwapBuffers() {
+    glfwSwapBuffers(this->m_Window);
+  }    
 
   bool Window::CreateNormalWindow(const char *title, uint32_t width, uint32_t height) {
     if (width != 0 and height != 0) {

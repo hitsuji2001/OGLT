@@ -12,25 +12,28 @@
 namespace oglt {
   class Shader {
   public:
-    GLuint m_ProgramID;
+    GLuint a_ProgramID;
+
     Shader();
     Shader(const char *vertexPath, const char *fragmentPath);
     virtual ~Shader();
 
     void Use(void);
 
+    // Primitive type
     void SetBool(const std::string& name, bool value);
     void SetFloat(const std::string& name, float value);
     void SetInteger(const std::string& name, int value);
 
+    // Vector
     void SetVec2(const std::string& name, float x, float y);
     void SetVec3(const std::string& name, float x, float y, float z);
     void SetVec4(const std::string& name, float x, float y, float z, float w);
-
     void SetVec2(const std::string& name, const glm::vec2& value);
     void SetVec3(const std::string& name, const glm::vec3& value);
     void SetVec4(const std::string& name, const glm::vec4& value);
 
+    // Matrix
     void SetMat2(const std::string& name, const glm::mat2& value);
     void SetMat3(const std::string& name, const glm::mat3& value);
     void SetMat4(const std::string& name, const glm::mat4& value);

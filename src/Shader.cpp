@@ -14,55 +14,55 @@ namespace oglt {
   }
 
   void Shader::Use() {
-    glUseProgram(this->m_ProgramID);
+    glUseProgram(this->a_ProgramID);
   }
 
   void Shader::SetBool(const std::string& name, bool value) {
-    glUniform1i(glGetUniformLocation(this->m_ProgramID, name.c_str()), (int) value);
+    glUniform1i(glGetUniformLocation(this->a_ProgramID, name.c_str()), (int) value);
   }
 
   void Shader::SetInteger(const std::string& name, int value) {
-    glUniform1i(glGetUniformLocation(this->m_ProgramID, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(this->a_ProgramID, name.c_str()), value);
   }
 
   void Shader::SetFloat(const std::string& name, float value) {
-    glUniform1f(glGetUniformLocation(this->m_ProgramID, name.c_str()), value);
+    glUniform1f(glGetUniformLocation(this->a_ProgramID, name.c_str()), value);
   }
 
   void Shader::SetVec2(const std::string& name, float x, float y) {
-    glUniform2f(glGetUniformLocation(this->m_ProgramID, name.c_str()), x, y);
+    glUniform2f(glGetUniformLocation(this->a_ProgramID, name.c_str()), x, y);
   }
 
   void Shader::SetVec3(const std::string& name, float x, float y, float z) {
-    glUniform3f(glGetUniformLocation(this->m_ProgramID, name.c_str()), x, y, z);
+    glUniform3f(glGetUniformLocation(this->a_ProgramID, name.c_str()), x, y, z);
   }
 
   void Shader::SetVec4(const std::string& name, float x, float y, float z, float w) {
-    glUniform4f(glGetUniformLocation(this->m_ProgramID, name.c_str()), x, y, z, w);
+    glUniform4f(glGetUniformLocation(this->a_ProgramID, name.c_str()), x, y, z, w);
   }
 
   void Shader::SetVec2(const std::string& name, const glm::vec2& value) {
-    glUniform2fv(glGetUniformLocation(this->m_ProgramID, name.c_str()), 1, &value[0]);
+    glUniform2fv(glGetUniformLocation(this->a_ProgramID, name.c_str()), 1, &value[0]);
   }
 
   void Shader::SetVec3(const std::string& name, const glm::vec3& value) {
-    glUniform3fv(glGetUniformLocation(this->m_ProgramID, name.c_str()), 1, &value[0]);
+    glUniform3fv(glGetUniformLocation(this->a_ProgramID, name.c_str()), 1, &value[0]);
   }
 
   void Shader::SetVec4(const std::string& name, const glm::vec4& value) {
-    glUniform4fv(glGetUniformLocation(this->m_ProgramID, name.c_str()), 1, &value[0]);
+    glUniform4fv(glGetUniformLocation(this->a_ProgramID, name.c_str()), 1, &value[0]);
   }
 
   void Shader::SetMat2(const std::string& name, const glm::mat2& value) {
-    glUniformMatrix2fv(glGetUniformLocation(this->m_ProgramID, name.c_str()), 1, GL_FALSE, &value[0][0]);
+    glUniformMatrix2fv(glGetUniformLocation(this->a_ProgramID, name.c_str()), 1, GL_FALSE, &value[0][0]);
   }
 
   void Shader::SetMat3(const std::string& name, const glm::mat3& value) {
-    glUniformMatrix3fv(glGetUniformLocation(this->m_ProgramID, name.c_str()), 1, GL_FALSE, &value[0][0]);
+    glUniformMatrix3fv(glGetUniformLocation(this->a_ProgramID, name.c_str()), 1, GL_FALSE, &value[0][0]);
   }
 
   void Shader::SetMat4(const std::string& name, const glm::mat4& value) {
-    glUniformMatrix4fv(glGetUniformLocation(this->m_ProgramID, name.c_str()), 1, GL_FALSE, &value[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(this->a_ProgramID, name.c_str()), 1, GL_FALSE, &value[0][0]);
   }
 
 
@@ -141,18 +141,18 @@ namespace oglt {
   }
 
   bool Shader::LinkProgram(GLuint vertexShader, GLuint fragmentShader) {
-    this->m_ProgramID = glCreateProgram();
-    glAttachShader(this->m_ProgramID, vertexShader);
-    glAttachShader(this->m_ProgramID, fragmentShader);
+    this->a_ProgramID = glCreateProgram();
+    glAttachShader(this->a_ProgramID, vertexShader);
+    glAttachShader(this->a_ProgramID, fragmentShader);
 
-    glLinkProgram(this->m_ProgramID);
+    glLinkProgram(this->a_ProgramID);
 
     GLint success = 0;
-    glGetProgramiv(this->m_ProgramID, GL_LINK_STATUS, &success);
+    glGetProgramiv(this->a_ProgramID, GL_LINK_STATUS, &success);
 
     if (!success) {
       GLchar logMessage[1024];
-      glGetProgramInfoLog(this->m_ProgramID, sizeof(logMessage), NULL, logMessage);
+      glGetProgramInfoLog(this->a_ProgramID, sizeof(logMessage), NULL, logMessage);
       std::cerr << "[OpenGL][Error]: Link `Shader Program` failed: " << logMessage << std::endl;
       return false;
     }
