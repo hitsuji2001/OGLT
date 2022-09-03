@@ -10,7 +10,7 @@ namespace oglt {
 
   }
 
-  void Window::CreateWindow(const char *title, WindowType type, int width, int height) {
+  void Window::CreateWindow(const std::string& title, WindowType type, int width, int height) {
     switch (type) {
     case WindowType::BorderlessFullscreen:
       this->CreateBorderlessFullscreenWindow(title);
@@ -49,7 +49,7 @@ namespace oglt {
     glfwSwapBuffers(this->m_Window);
   }    
 
-  bool Window::CreateNormalWindow(const char *title, uint32_t width, uint32_t height) {
+  bool Window::CreateNormalWindow(const std::string& title, uint32_t width, uint32_t height) {
     if (width != 0 and height != 0) {
       this->a_Width  = width;
       this->a_Height = height;
@@ -59,7 +59,7 @@ namespace oglt {
     }
     this->a_Title = title;
 
-    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, NULL, NULL);
+    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title.c_str(), NULL, NULL);
     if (this->m_Window == NULL) {
       std::cerr << "[OpenGL][Error]: Could not create Window\n";
       glfwTerminate();
@@ -72,14 +72,14 @@ namespace oglt {
     return true;
   }
 
-  bool Window::CreateFullScreenWindow(const char *title) {
+  bool Window::CreateFullScreenWindow(const std::string& title) {
     this->a_Width = this->m_VideoMode->width;
     this->a_Height = this->a_Width;
     this->a_Title = title;
 
-    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, glfwGetPrimaryMonitor(), NULL);
+    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title.c_str(), glfwGetPrimaryMonitor(), NULL);
     if (this->m_Window == NULL) {
-      std::cerr << "[OpeGL - Error]: Could not create Window\n";
+      std::cerr << "[OpenGL - Error]: Could not create Window\n";
       glfwTerminate();
       return false;
     }
@@ -91,7 +91,7 @@ namespace oglt {
     return true;
  }
 
-  bool Window::CreateCenteredWindow(const char *title, uint32_t width, uint32_t height) {
+  bool Window::CreateCenteredWindow(const std::string& title, uint32_t width, uint32_t height) {
     if (width != 0 and height != 0) {
       this->a_Width  = width;
       this->a_Height = height;
@@ -102,14 +102,12 @@ namespace oglt {
     this->a_Title = title;
 
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, NULL, NULL);
+    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title.c_str(), NULL, NULL);
     if (this->m_Window == NULL) {
       std::cerr << "[OpenGL][Error]: Could not create Window\n";
       glfwTerminate();
       return false;
     }
-    glfwDefaultWindowHints();
-    
     int monitorX;
     int monitorY;
     glfwGetMonitorPos(this->m_Monitors[0], &monitorX, &monitorY);
@@ -126,7 +124,7 @@ namespace oglt {
     return true;
   }
 
-  bool Window::CreateBorderlessFullscreenWindow(const char *title) {
+  bool Window::CreateBorderlessFullscreenWindow(const std::string& title) {
     const GLFWvidmode *mode = glfwGetVideoMode(*this->m_Monitors);
 
     glfwWindowHint(GLFW_RED_BITS, mode->redBits);
@@ -138,7 +136,7 @@ namespace oglt {
     this->a_Height = mode->height;
     this->a_Title = title;
 
-    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title, *this->m_Monitors, NULL);
+    this->m_Window = glfwCreateWindow(this->a_Width, this->a_Height, this->a_Title.c_str(), *this->m_Monitors, NULL);
     if (this->m_Window == NULL) {
       std::cerr << "[OpenGL][Error]: Could not create Window\n";
       glfwTerminate();

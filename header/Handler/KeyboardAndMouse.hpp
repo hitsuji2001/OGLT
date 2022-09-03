@@ -129,7 +129,6 @@ namespace oglt {
     KeyMenu,
   };
 
-
   // This was stolen from here:
   // If I miss something please notify me
   // https://www.glfw.org/docs/3.3/input_guide.html#input_key

@@ -1,6 +1,8 @@
 #ifndef __BUFFER_OBJECT_HPP
 #define __BUFFER_OBJECT_HPP
 
+#include <memory>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 

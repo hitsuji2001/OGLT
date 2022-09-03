@@ -13,8 +13,12 @@ namespace oglt {
 
   }
 
-  void Shader::Use() {
+  void Shader::Bind() {
     glUseProgram(this->a_ProgramID);
+  }
+
+  void Shader::Unbind() {
+    glUseProgram(0);
   }
 
   void Shader::SetBool(const std::string& name, bool value) {

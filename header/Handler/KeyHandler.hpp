@@ -7,7 +7,7 @@ namespace oglt {
   class KeyHandler final : public Handler {
   public:
     KeyHandler();
-    KeyHandler(Window *window, Camera *camera);
+    KeyHandler(std::shared_ptr<Window> window, std::shared_ptr<Camera> camera);
     virtual ~KeyHandler();
 
     void Handle(float deltatime) override;

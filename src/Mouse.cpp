@@ -43,19 +43,19 @@ namespace oglt {
     this->a_FirstMouse = value;
   }
 
-  void Mouse::SetMouseInputMode(Window *window, int mode, int value) {
+  void Mouse::SetMouseInputMode(std::shared_ptr<Window> window, int mode, int value) {
     glfwSetInputMode(window->GetOpenGLWindow(), mode, value);
   }
 
-  void Mouse::DisableCursor(Window *window) {
+  void Mouse::DisableCursor(std::shared_ptr<Window> window) {
     glfwSetInputMode(window->GetOpenGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   }    
 
-  void Mouse::SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), Window *window) {
+  void Mouse::SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), std::shared_ptr<Window> window) {
     glfwSetCursorPosCallback(window->GetOpenGLWindow(), callback);
   }
 
-  void Mouse::SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffet), Window *window) {
+  void Mouse::SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffet), std::shared_ptr<Window> window) {
     glfwSetScrollCallback(window->GetOpenGLWindow(), callback);
   }
 }

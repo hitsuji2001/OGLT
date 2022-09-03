@@ -18,7 +18,8 @@ namespace oglt {
     Shader(const char *vertexPath, const char *fragmentPath);
     virtual ~Shader();
 
-    void Use(void);
+    void Bind();
+    void Unbind();
 
     // Primitive type
     void SetBool(const std::string& name, bool value);

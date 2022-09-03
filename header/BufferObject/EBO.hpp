@@ -1,9 +1,6 @@
 #ifndef __EBO_HPP__
 #define __EBO_HPP__
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "./BufferObject.hpp"
 
 namespace oglt {

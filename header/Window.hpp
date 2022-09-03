@@ -26,7 +26,7 @@ namespace oglt {
     // This will create a window of the size
     // width  = (primary monior width) / 1.75f
     // height = width / 16 * 9
-    void CreateWindow(const char *title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
+    void CreateWindow(const std::string& title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
     // hex_color will be in RGBA order
     void ClearScreen(uint32_t hex_color, GLbitfield mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     void SwapBuffers();
@@ -42,10 +42,10 @@ namespace oglt {
     bool InitGLFW();
     bool InitGLAD();
 
-    bool CreateNormalWindow(const char *title, uint32_t width = 0, uint32_t height = 0);
-    bool CreateFullScreenWindow(const char *title);
-    bool CreateBorderlessFullscreenWindow(const char *title);
-    bool CreateCenteredWindow(const char *title, uint32_t width = 0, uint32_t height = 0);
+    bool CreateNormalWindow(const std::string& title, uint32_t width = 0, uint32_t height = 0);
+    bool CreateFullScreenWindow(const std::string& title);
+    bool CreateBorderlessFullscreenWindow(const std::string& title);
+    bool CreateCenteredWindow(const std::string& title, uint32_t width = 0, uint32_t height = 0);
 
     void SetUpAttributes();
     static void FramebufferSizeCallback(GLFWwindow *window, int width, int height);
@@ -55,10 +55,10 @@ namespace oglt {
     GLFWmonitor       **m_Monitors;
     const GLFWvidmode  *m_VideoMode;
 
-    int         a_MonitorCount;
-    uint32_t    a_Width;
-    uint32_t    a_Height;
-    const char *a_Title;
+    int                 a_MonitorCount;
+    uint32_t            a_Width;
+    uint32_t            a_Height;
+    std::string         a_Title;
   };
 }
 

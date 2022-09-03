@@ -3,22 +3,23 @@
 
 #include "./Shader.hpp"
 #include "./Window.hpp"
-#include "./Camera.hpp"
 #include "./Mouse.hpp"
+
+#include "./Camera/Camera.hpp"
+#include "./Camera/PerspectiveCamera.hpp"
+#include "./Camera/OrthographicCamera.hpp"
+
+#include "./BufferObject/VAO.hpp"
+#include "./BufferObject/VBO.hpp"
+#include "./BufferObject/EBO.hpp"
 
 #include "./Texture/Texture.hpp"
 #include "./Texture/Texture2D.hpp"
 #include "./Texture/Texture3D.hpp"
 
-#include "./BufferObject/VBO.hpp"
-#include "./BufferObject/EBO.hpp"
-#include "./BufferObject/VAO.hpp"
-
 #include "./Handler/Handler.hpp"
 #include "./Handler/KeyHandler.hpp"
 #include "./Handler/MouseHandler.hpp"
-
-#define DELETE_IF_NOT_NULL(x) if ((x) != NULL) delete (x);
 
 namespace oglt {
   class OpenGL {
@@ -29,37 +30,42 @@ namespace oglt {
     }
     virtual ~OpenGL();
 
-    Shader   *GetShader();
-    Texture  *GetTexture();
+    Shader   &GetShader();
+    Texture  &GetTexture();
 
-    VAO      *GetVAO();
-    VBO      *GetVBO();
-    EBO      *GetEBO();
+    /// WILL CHANGE ///
+    VAO      &GetVAO();
+    VBO      &GetVBO();
+    EBO      &GetEBO();
+    /// WILL CHANGE ///
 
-    static Window   *GetWindow();
-    static Camera   *GetCamera();
-    static Mouse    *GetMouse();
-    static Handler  *GetKeyHandler();
-    static Handler  *GetMouseHandler();
+    static std::shared_ptr<Window>   GetWindow();
+    static std::shared_ptr<Camera>   GetCamera();
+    static std::shared_ptr<Mouse>    GetMouse();
+
+    static Handler  &GetKeyHandler();
+    static Handler  &GetMouseHandler();
     static float     GetDeltaTime();
 
     void CreateShaders(const char *vertexPath, const char *fragmentPath);
     void CreateTexture(TextureType type, GLint wrapping = GL_REPEAT, GLint filter = GL_LINEAR);
 
     static void PollEvents();
+    static void WaitEvents();
     static void CalculateDeltaTime();
-    static void CreateWindow(const char *title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
-    static void CreateCamera();
+
+    static void CreateWindow(const std::string& title, WindowType type = WindowType::WindowedCentered, int width = 0, int height = 0);
+    static void CreateCamera(CameraType type);
     static void CreateMouse();
-    // You can call this after you called `CreateCamera()`
     static void CreateKeyHandler();
-    // You can call this after you called `CreateCamera()` and `CreateMouse()`
     static void CreateMouseHandler();
 
+    /// WILL CHANGE ///
     void CreateVAO();
     void CreateVBO();
     void CreateEBO();
-  
+    /// WILL CHANGE ///
+
   protected:
     OpenGL();
     OpenGL(const OpenGL&) = delete;
@@ -68,21 +74,24 @@ namespace oglt {
     void CleanUp();
 
   private:
-    static float a_DeltaTime;
-    static float a_LastFrame;
+    static float    a_DeltaTime;
+    static float    a_LastFrame;
 
-    static Camera  *m_ViewCamera;
-    static Mouse   *m_Mouse;
-    static Handler *m_KeyHandler;
-    static Handler *m_MouseHandler;
-    static Window  *m_Window;
+    static std::shared_ptr<Window>  m_Window;
+    static std::shared_ptr<Camera>  m_ViewCamera;
+    static std::shared_ptr<Mouse>   m_Mouse;
 
-    Shader   *m_Shader;
-    Texture  *m_Texture;
+    static std::unique_ptr<Handler> m_KeyHandler;
+    static std::unique_ptr<Handler> m_MouseHandler;
 
-    VAO      *m_VAO;
-    VBO      *m_VBO;
-    EBO      *m_EBO;
+    /// WILL CHANGE ///
+    std::unique_ptr<Shader>   m_Shader;
+    std::unique_ptr<Texture>  m_Texture;
+
+    std::unique_ptr<VAO>      m_VAO;
+    std::unique_ptr<VBO>      m_VBO;
+    std::unique_ptr<EBO>      m_EBO;
+    /// WILL CHANGE ///
   };
 }
 

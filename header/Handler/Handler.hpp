@@ -1,9 +1,9 @@
 #ifndef __HANDLER_HPP__
 #define __HANDLER_HPP__
 
-#include <map>
+#include <memory>
 
-#include "../Camera.hpp"
+#include "../Camera/Camera.hpp"
 #include "../Window.hpp"
 #include "../Mouse.hpp"
 #include "./KeyboardAndMouse.hpp"
@@ -14,18 +14,18 @@ namespace oglt {
     virtual ~Handler() = 0;
     virtual void Handle(float deltatime) = 0;
 
-    static Camera *GetCamera();
-    static Mouse  *GetMouse();
-    static Window *GetWindow();
+    static std::shared_ptr<Camera> GetCamera();
+    static std::shared_ptr<Mouse>  GetMouse();
+    static std::shared_ptr<Window> GetWindow();
 
-    static void SetCamera(Camera *camera);
-    static void SetWindow(Window *window);
-    static void SetMouse(Mouse *mouse);
+    static void SetWindow(std::shared_ptr<Window> window);
+    static void SetCamera(std::shared_ptr<Camera> camera);
+    static void SetMouse(std::shared_ptr<Mouse> mouse);
 
   private:
-    static Camera *m_Camera;
-    static Mouse  *m_Mouse;
-    static Window *m_Window;
+    static std::shared_ptr<Camera> m_Camera;
+    static std::shared_ptr<Mouse>  m_Mouse;
+    static std::shared_ptr<Window> m_Window;
   };
 }
 

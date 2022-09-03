@@ -8,7 +8,7 @@ namespace oglt {
   class MouseHandler final : public Handler {
   public:
     MouseHandler();
-    MouseHandler(Window *window, Mouse *mouse, Camera *camera);
+    MouseHandler(std::shared_ptr<Window> window, std::shared_ptr<Mouse> mouse, std::shared_ptr<Camera> camera);
     virtual ~MouseHandler();
 
     void Handle(float deltatime) override;

@@ -5,13 +5,13 @@ namespace oglt {
     glGenVertexArrays(1, &this->ID);
   }
 
-  void VAO::LinkVBO(VBO *vbo, GLuint layout, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer) {
-    vbo->Bind();
+  void VAO::LinkVBO(VBO& vbo, GLuint layout, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer) {
+    vbo.Bind();
 
     glVertexAttribPointer(layout, size, type, normalized, stride, pointer);
     glEnableVertexAttribArray(layout);
 
-    vbo->Unbind();
+    vbo.Unbind();
   }
 
 

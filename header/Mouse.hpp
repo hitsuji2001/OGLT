@@ -1,6 +1,8 @@
 #ifndef __MOUSE_HPP__
 #define __MOUSE_HPP__
 
+#include <memory>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -11,11 +13,11 @@ namespace oglt {
 
   class Mouse {
   public:
-    void SetMouseInputMode(Window *window, int mode, int value);
-    void DisableCursor(Window *window);
+    void SetMouseInputMode(std::shared_ptr<Window> window, int mode, int value);
+    void DisableCursor(std::shared_ptr<Window> window);
 
-    void SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), Window *window);
-    void SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffset), Window *window);
+    void SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn),   std::shared_ptr<Window> window);
+    void SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffset), std::shared_ptr<Window> window);
 
     float GetLastXPos();
     float GetLastYPos();

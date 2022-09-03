@@ -1,9 +1,6 @@
 #ifndef __TEXTURE_2D_HPP__
 #define __TEXTURE_2D_HPP__
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "./Texture.hpp"
 
 namespace oglt {

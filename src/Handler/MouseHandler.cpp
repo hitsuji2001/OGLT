@@ -7,7 +7,7 @@ namespace oglt {
   MouseHandler::~MouseHandler() {
   }
 
-  MouseHandler::MouseHandler(Window *window, Mouse *mouse, Camera *camera) {
+  MouseHandler::MouseHandler(std::shared_ptr<Window> window, std::shared_ptr<Mouse> mouse, std::shared_ptr<Camera> camera) {
     MouseHandler::SetWindow(window);
     MouseHandler::SetCamera(camera);
     MouseHandler::SetMouse(mouse);
@@ -23,8 +23,8 @@ namespace oglt {
   void MouseHandler::MouseCursorCallback(GLFWwindow *window, double xPosIn, double yPosIn) {
     (void) window;
 
-    Camera *camera = MouseHandler::GetCamera();
-    Mouse  *mouse  = MouseHandler::GetMouse();
+    std::shared_ptr<Camera> camera = MouseHandler::GetCamera();
+    std::shared_ptr<Mouse>  mouse  = MouseHandler::GetMouse();
 
     float xpos = (float) xPosIn;
     float ypos = (float) yPosIn;
@@ -61,7 +61,7 @@ namespace oglt {
     (void) window;
     (void) xoffset;
 
-    Camera *camera = MouseHandler::GetCamera();
+    std::shared_ptr<Camera> camera = MouseHandler::GetCamera();
 
     camera->SetFOV(camera->GetFOV() - yoffset);
     if (camera->GetFOV() < 1.0f) camera->SetFOV(1.0f);
