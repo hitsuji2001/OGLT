@@ -21,7 +21,7 @@ namespace oglt {
 
     virtual void CreateTexture(GLint wrapping = GL_REPEAT, GLint filter = GL_LINEAR) = 0;
     virtual void ActiveTexture(GLenum index) = 0;
-    virtual void LoadTexture(const char *filePath, GLint format, GLsizei depth = 16) = 0;
+    virtual void LoadTexture(const std::string& filePath, GLint format, GLsizei depth = 16) = 0;
 
   public:
     GLuint m_TextureID;

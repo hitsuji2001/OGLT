@@ -12,9 +12,9 @@ namespace oglt {
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, filter);
   }
 
-  void Texture3D::LoadTexture(const char *file_path, GLint format, GLsizei depth) {
+  void Texture3D::LoadTexture(const std::string& file_path, GLint format, GLsizei depth) {
     int width, height, color_channels;
-    unsigned char *data = stbi_load(file_path, &width, &height, &color_channels, 0);
+    unsigned char *data = stbi_load(file_path.c_str(), &width, &height, &color_channels, 0);
     if (data == NULL) {
       std::cerr << "Could not load file `" << file_path << "`" << std::endl;
       exit(1);

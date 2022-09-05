@@ -7,20 +7,50 @@ namespace oglt {
   MouseHandler::~MouseHandler() {
   }
 
-  MouseHandler::MouseHandler(std::shared_ptr<Window> window, std::shared_ptr<Mouse> mouse, std::shared_ptr<Camera> camera) {
+  MouseHandler::MouseHandler(std::shared_ptr<Window>& window, std::shared_ptr<Mouse>& mouse, std::shared_ptr<Camera>& camera) {
     MouseHandler::SetWindow(window);
     MouseHandler::SetCamera(camera);
     MouseHandler::SetMouse(mouse);
   }
 
-  void MouseHandler::Handle(float deltatime) {
-    (void) deltatime;
-
-    MouseHandler::GetMouse()->SetMouseCursorCallback(MouseHandler::MouseCursorCallback, MouseHandler::GetWindow());
-    MouseHandler::GetMouse()->SetMouseScrollCallback(MouseHandler::MouseScrollCallback, MouseHandler::GetWindow());
+  MouseHandler::MouseHandler(std::shared_ptr<Window>& window, std::shared_ptr<Mouse>& mouse, std::shared_ptr<Camera>& camera, const CameraType& type) {
+    MouseHandler::SetWindow(window);
+    MouseHandler::SetCamera(camera);
+    MouseHandler::SetMouse(mouse);
+    MouseHandler::SetCameraType(type);
   }
 
-  void MouseHandler::MouseCursorCallback(GLFWwindow *window, double xPosIn, double yPosIn) {
+  void MouseHandler::Handle(float deltatime) {
+    (void) deltatime;
+    switch (this->GetCameraType()) {
+    case CameraType::PerspecCamera:
+      this->HandlePerspecCamera(deltatime);
+      break;
+    case CameraType::OrthoCamera:
+      this->HandleOrthoCamera(deltatime);
+      break;
+    case CameraType::Undefined:
+      std::cerr << "[OpenGL][Error]: Camera type should never be undefined ?" << std::endl;
+      exit(1);
+      break;
+    default:
+      break;
+    }
+  }
+
+  void MouseHandler::HandlePerspecCamera(float deltatime) {
+    (void) deltatime;
+    MouseHandler::GetMouse()->SetMouseCursorCallback(MouseHandler::PerspecMouseCursorCallback, MouseHandler::GetWindow());
+    MouseHandler::GetMouse()->SetMouseScrollCallback(MouseHandler::PerspecMouseScrollCallback, MouseHandler::GetWindow());
+  }
+
+  void MouseHandler::HandleOrthoCamera(float deltatime) {
+    (void) deltatime;
+    MouseHandler::GetMouse()->SetMouseCursorCallback(MouseHandler::OrthoMouseCursorCallback, MouseHandler::GetWindow());
+    MouseHandler::GetMouse()->SetMouseScrollCallback(MouseHandler::OrthoMouseScrollCallback, MouseHandler::GetWindow());
+  }
+
+  void MouseHandler::PerspecMouseCursorCallback(GLFWwindow *window, double xPosIn, double yPosIn) {
     (void) window;
 
     std::shared_ptr<Camera> camera = MouseHandler::GetCamera();
@@ -57,7 +87,7 @@ namespace oglt {
     camera->SetFrontVector(glm::normalize(front));
   }
  
-  void MouseHandler::MouseScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+  void MouseHandler::PerspecMouseScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     (void) window;
     (void) xoffset;
 
@@ -66,5 +96,19 @@ namespace oglt {
     camera->SetFOV(camera->GetFOV() - yoffset);
     if (camera->GetFOV() < 1.0f) camera->SetFOV(1.0f);
     if (camera->GetFOV() > 45.0f) camera->SetFOV(45.0f);
+  }
+
+  void MouseHandler::OrthoMouseCursorCallback(GLFWwindow *window, double xPosIn, double yPosIn) {
+    (void) window;
+    (void) xPosIn;
+    (void) yPosIn;
+    assert(0 and "`OrthoMouseCursorCallback` is not implemented yet.\n");
+  }
+
+  void MouseHandler::OrthoMouseScrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+    (void) window;
+    (void) xoffset;
+    (void) yoffset;
+    assert(0 and "`OrthoMouseScrollCallback` is not implemented yet.\n");
   }
 }

@@ -14,15 +14,18 @@ namespace oglt {
     virtual ~Handler() = 0;
     virtual void Handle(float deltatime) = 0;
 
-    static std::shared_ptr<Camera> GetCamera();
-    static std::shared_ptr<Mouse>  GetMouse();
-    static std::shared_ptr<Window> GetWindow();
+    static const std::shared_ptr<Camera>& GetCamera();
+    static const std::shared_ptr<Mouse>&  GetMouse();
+    static const std::shared_ptr<Window>& GetWindow();
+    static const CameraType& GetCameraType();
 
-    static void SetWindow(std::shared_ptr<Window> window);
-    static void SetCamera(std::shared_ptr<Camera> camera);
-    static void SetMouse(std::shared_ptr<Mouse> mouse);
+    static void SetWindow(const std::shared_ptr<Window>& window);
+    static void SetCamera(const std::shared_ptr<Camera>& camera);
+    static void SetMouse(const std::shared_ptr<Mouse>& mouse);
+    static void SetCameraType(const CameraType& type);
 
   private:
+    static CameraType              a_Type;
     static std::shared_ptr<Camera> m_Camera;
     static std::shared_ptr<Mouse>  m_Mouse;
     static std::shared_ptr<Window> m_Window;

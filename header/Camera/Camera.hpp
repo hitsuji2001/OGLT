@@ -12,6 +12,7 @@ namespace oglt {
   enum class CameraType {
     OrthoCamera,
     PerspecCamera,
+    Undefined,
   };
 
   class Camera {

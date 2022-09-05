@@ -13,16 +13,16 @@ namespace oglt {
 
   class Mouse {
   public:
-    void SetMouseInputMode(std::shared_ptr<Window> window, int mode, int value);
-    void DisableCursor(std::shared_ptr<Window> window);
+    void SetMouseInputMode(const std::shared_ptr<Window>& window, int mode, int value);
+    void DisableCursor(const std::shared_ptr<Window>& window);
 
-    void SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn),   std::shared_ptr<Window> window);
+    void SetMouseCursorCallback(void (*callback)(GLFWwindow *window, double xPosIn, double yPosIn), std::shared_ptr<Window> window);
     void SetMouseScrollCallback(void (*callback)(GLFWwindow *window, double xOffset, double yOffset), std::shared_ptr<Window> window);
 
-    float GetLastXPos();
-    float GetLastYPos();
-    float GetSensitivity();
-    bool  IsFirstMouse();
+    float GetLastXPos() const;
+    float GetLastYPos() const;
+    float GetSensitivity() const;
+    bool  IsFirstMouse() const;
 
     void SetFirstMouse(bool value);
     void SetLastXPos(float value);

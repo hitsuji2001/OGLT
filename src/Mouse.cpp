@@ -15,19 +15,19 @@ namespace oglt {
 
   }
 
-  bool Mouse::IsFirstMouse() {
+  bool Mouse::IsFirstMouse() const {
     return this->a_FirstMouse;
   }
 
-  float Mouse::GetSensitivity() {
+  float Mouse::GetSensitivity() const {
     return this->a_Sensitivty;
   }
 
-  float Mouse::GetLastXPos() {
+  float Mouse::GetLastXPos() const {
     return this->a_LastXPos;
   }
 
-  float Mouse::GetLastYPos() {
+  float Mouse::GetLastYPos() const {
     return this->a_LastYPos;
   }
 
@@ -43,11 +43,11 @@ namespace oglt {
     this->a_FirstMouse = value;
   }
 
-  void Mouse::SetMouseInputMode(std::shared_ptr<Window> window, int mode, int value) {
+  void Mouse::SetMouseInputMode(const std::shared_ptr<Window>& window, int mode, int value) {
     glfwSetInputMode(window->GetOpenGLWindow(), mode, value);
   }
 
-  void Mouse::DisableCursor(std::shared_ptr<Window> window) {
+  void Mouse::DisableCursor(const std::shared_ptr<Window>& window) {
     glfwSetInputMode(window->GetOpenGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
   }    
 

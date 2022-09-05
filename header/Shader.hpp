@@ -15,7 +15,7 @@ namespace oglt {
     GLuint a_ProgramID;
 
     Shader();
-    Shader(const char *vertexPath, const char *fragmentPath);
+    Shader(const std::string& vertexPath, const std::string& fragmentPath);
     virtual ~Shader();
 
     void Bind();
@@ -39,11 +39,11 @@ namespace oglt {
     void SetMat3(const std::string& name, const glm::mat3& value);
     void SetMat4(const std::string& name, const glm::mat4& value);
 
-    bool LoadShaders(const char *vertexFilePath, const char *fragmentFilePath);
+    bool LoadShaders(const std::string& vertexFilePath, const std::string& fragmentFilePath);
   private:
-    std::string GetFileContents(const char *filePath);
+    std::string GetFileContents(const std::string& filePath);
     bool CompileShaderSource(const GLchar *source, GLenum shaderType, GLuint *shader);
-    bool CompileShaderFile(const char *filePath, GLenum shaderType, GLuint *shader);
+    bool CompileShaderFile(const std::string& filePath, GLenum shaderType, GLuint *shader);
     bool LinkProgram(GLuint vertexShader, GLuint fragmentShader);
   };
 }

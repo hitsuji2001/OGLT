@@ -5,7 +5,7 @@ namespace oglt {
 
   }
 
-  Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+  Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
     this->LoadShaders(vertexPath, fragmentPath);
   }
 
@@ -70,7 +70,7 @@ namespace oglt {
   }
 
 
-  bool Shader::LoadShaders(const char *vertexFilePath, const char *fragmentFilePath) {
+  bool Shader::LoadShaders(const std::string& vertexFilePath, const std::string& fragmentFilePath) {
     GLuint vertexShader = 0;
     if (!this->CompileShaderFile(vertexFilePath, GL_VERTEX_SHADER, &vertexShader)) {
       return false;
@@ -88,22 +88,22 @@ namespace oglt {
     return true;
   }
 
-  std::string Shader::GetFileContents(const char *filePath) {
-    std::ifstream file(filePath);
+  std::string Shader::GetFileContents(const std::string& file_path) {
+    std::ifstream file(file_path);
     if (!file) {
-      std::cerr << "File " << filePath << " does not exist" << std::endl;
+      std::cerr << "File " << file_path << " does not exist" << std::endl;
       exit(1);
     }
 
-    std::string fileContent;
+    std::string file_content;
     std::string temp;
 
     while (getline(file, temp)) {
-      fileContent += temp + "\n";
+      file_content += temp + "\n";
     }
     file.close();
 
-    return fileContent;
+    return file_content;
   }
   bool Shader::CompileShaderSource(const GLchar *source, GLenum shaderType, GLuint *shader) {
     *shader = glCreateShader(shaderType);
@@ -128,7 +128,7 @@ namespace oglt {
     return true;
   }
 
-  bool Shader::CompileShaderFile(const char *filePath, GLenum shaderType, GLuint *shader) {
+  bool Shader::CompileShaderFile(const std::string& filePath, GLenum shaderType, GLuint *shader) {
     std::string fileContent = this->GetFileContents(filePath);
     const char *source = fileContent.c_str();
   

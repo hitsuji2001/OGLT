@@ -11,6 +11,7 @@ namespace oglt {
 
   std::unique_ptr<Handler>  OpenGL::m_MouseHandler	= nullptr;
   std::unique_ptr<Handler>  OpenGL::m_KeyHandler	= nullptr;
+  std::unique_ptr<Renderer> OpenGL::m_Renderer          = nullptr;
 
   OpenGL::OpenGL() {
     this->m_Shader		= nullptr;
@@ -24,14 +25,66 @@ namespace oglt {
     this->m_EBO			= nullptr;
   }
 
-  void OpenGL::CreateWindow(const std::string& title, WindowType type, int width, int height) {
+  OpenGL::~OpenGL() {
+    glfwTerminate();
+  }
+
+  float OpenGL::GetDeltaTime() {
+    return OpenGL::a_DeltaTime;
+  }
+
+  Shader& OpenGL::GetShader() {
+    return *this->m_Shader;
+  }
+
+  std::shared_ptr<Camera>& OpenGL::GetCamera() {
+    return OpenGL::m_ViewCamera;
+  }
+
+  std::shared_ptr<Mouse>& OpenGL::GetMouse() {
+    return OpenGL::m_Mouse;
+  }
+
+  std::shared_ptr<Window>& OpenGL::GetWindow() {
+    return OpenGL::m_Window;
+  }
+
+  Texture& OpenGL::GetTexture() {
+    return *this->m_Texture;
+  }
+
+  Handler& OpenGL::GetKeyHandler() {
+    return *OpenGL::m_KeyHandler;
+  }
+
+  Handler& OpenGL::GetMouseHandler() {
+    return *OpenGL::m_MouseHandler;
+  }
+
+  Renderer& OpenGL::GetRenderer() {
+    return *OpenGL::m_Renderer;
+  }
+
+  VAO& OpenGL::GetVAO() {
+    return *this->m_VAO;
+  }
+
+  VBO& OpenGL::GetVBO() {
+    return *this->m_VBO;
+  }
+
+  EBO& OpenGL::GetEBO() {
+    return *this->m_EBO;
+  }
+
+  void OpenGL::CreateWindow(const std::string& title, const WindowType& type, int width, int height) {
     if (OpenGL::m_Window == nullptr) {
       OpenGL::m_Window = std::make_shared<Window>();
       OpenGL::GetWindow()->CreateWindow(title, type, width, height);
     }
   }
 
-  void OpenGL::CreateShaders(const char *vertexPath, const char *fragmentPath) {
+  void OpenGL::CreateShaders(const std::string& vertexPath, const std::string& fragmentPath) {
     // [TODO]: Maybe we could have multiple shaders,
     // so find a way to handle that.
     // Right now we just support 1 of each type of shader.
@@ -42,14 +95,16 @@ namespace oglt {
     }
   }
 
-  void OpenGL::CreateCamera(CameraType type) {
+  void OpenGL::CreateCamera(const CameraType& type) {
     if (OpenGL::m_ViewCamera == nullptr) {
       switch (type) {
       case CameraType::OrthoCamera:
-	OpenGL::m_ViewCamera = std::make_unique<OrthographicCamera>(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+	OpenGL::m_ViewCamera = std::make_unique<OrthographicCamera>(0.0f, OpenGL::GetWindow()->GetWidth(), 0.0f, OpenGL::GetWindow()->GetHeight(), 0.1f, 100.0f);
 	break;
       case CameraType::PerspecCamera:
 	OpenGL::m_ViewCamera = std::make_unique<PerspectiveCamera>();
+	break;
+      default:
 	break;
       }
     }
@@ -73,15 +128,16 @@ namespace oglt {
     this->m_Texture->CreateTexture(wrapping, filter);
   }
 
-  void OpenGL::CreateKeyHandler() {
+  void OpenGL::CreateKeyHandler(const CameraType& type) {
     if (OpenGL::m_KeyHandler == nullptr) {
       OpenGL::m_KeyHandler = std::make_unique<KeyHandler>(OpenGL::m_Window,
-							  OpenGL::m_ViewCamera);
+							  OpenGL::m_ViewCamera, type);
     }
   }
 
-  void OpenGL::CreateMouseHandler() {
+  void OpenGL::CreateMouseHandler(const CameraType& type) {
     if (OpenGL::m_MouseHandler == nullptr) {
+      (void) type;
       OpenGL::m_MouseHandler = std::make_unique<MouseHandler>(OpenGL::m_Window,
 							      OpenGL::m_Mouse,
 							      OpenGL::m_ViewCamera);
@@ -103,8 +159,8 @@ namespace oglt {
     if (this->m_EBO == nullptr) this->m_EBO = std::make_unique<EBO>();
   }
 
-  OpenGL::~OpenGL() {
-    glfwTerminate();
+  void OpenGL::CreateRenderer() {
+    if (OpenGL::m_Renderer == nullptr) OpenGL::m_Renderer = std::make_unique<Renderer>(OpenGL::GetWindow());
   }
 
   void OpenGL::PollEvents() {
@@ -115,53 +171,9 @@ namespace oglt {
     glfwWaitEvents();
   }
 
-  float OpenGL::GetDeltaTime() {
-    return OpenGL::a_DeltaTime;
-  }
-
   void OpenGL::CalculateDeltaTime() {
     float currentFrame = glfwGetTime();
     OpenGL::a_DeltaTime = currentFrame - OpenGL::a_LastFrame;
     OpenGL::a_LastFrame = currentFrame;
-  }
-
-  Shader &OpenGL::GetShader() {
-    return *this->m_Shader;
-  }
-
-  std::shared_ptr<Camera> OpenGL::GetCamera() {
-    return OpenGL::m_ViewCamera;
-  }
-
-  std::shared_ptr<Mouse> OpenGL::GetMouse() {
-    return OpenGL::m_Mouse;
-  }
-
-  std::shared_ptr<Window> OpenGL::GetWindow() {
-    return OpenGL::m_Window;
-  }
-
-  Texture& OpenGL::GetTexture() {
-    return *this->m_Texture;
-  }
-
-  Handler& OpenGL::GetKeyHandler() {
-    return *OpenGL::m_KeyHandler;
-  }
-
-  Handler& OpenGL::GetMouseHandler() {
-    return *OpenGL::m_MouseHandler;
-  }
-
-  VAO& OpenGL::GetVAO() {
-    return *this->m_VAO;
-  }
-
-  VBO& OpenGL::GetVBO() {
-    return *this->m_VBO;
-  }
-
-  EBO& OpenGL::GetEBO() {
-    return *this->m_EBO;
   }
 }

@@ -9,7 +9,7 @@ namespace oglt {
     Texture3D() = default;
     
     void CreateTexture(GLint wrapping = GL_REPEAT, GLint filter = GL_LINEAR) override;
-    void LoadTexture(const char *file_path, GLint format, GLsizei depth) override;
+    void LoadTexture(const std::string& file_path, GLint format, GLsizei depth) override;
     void ActiveTexture(GLenum index) override;
   };
 }
